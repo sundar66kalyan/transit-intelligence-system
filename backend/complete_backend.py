@@ -1,4 +1,4 @@
-﻿# backend/production_backend.py - Updated with Entry and Exit
+﻿# backend/complete_backend.py
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image
 import io
 import pickle
-import random
+import json
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
     yield
     save_face_database()
 
-app = FastAPI(title="AI Transit System", version="2.0.0", lifespan=lifespan)
+app = FastAPI(title="AI Transit System", version="3.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,7 +40,6 @@ registered_passengers = []
 active_sessions = {}
 completed_journeys = []
 alerts = []
-unregistered_count = 0
 
 # Face database
 known_face_encodings = []
@@ -68,12 +67,15 @@ def load_face_database():
             print(f"✅ Loaded {len(known_face_encodings)} faces")
         except:
             print("No existing database")
+    else:
+        print("No database found. Starting fresh.")
 
 def save_face_database():
     db_path = "D:/transit-intelligence-system/data/face_db.pkl"
     data = {"encodings": known_face_encodings, "data": known_face_data}
     with open(db_path, "wb") as f:
         pickle.dump(data, f)
+    print(f"✅ Saved {len(known_face_encodings)} faces")
 
 def encode_face(image_bytes):
     try:
@@ -91,7 +93,8 @@ def encode_face(image_bytes):
         if encodings:
             return encodings[0]
         return None
-    except:
+    except Exception as e:
+        print(f"Encode error: {e}")
         return None
 
 def match_face_in_db(image_bytes):
@@ -107,14 +110,21 @@ def match_face_in_db(image_bytes):
         return known_face_data[best_match_index], confidence
     return None, confidence
 
-# API Endpoints
+# ============ API ENDPOINTS ============
+
 @app.get("/")
 async def root():
-    return {"message": "AI Transit System", "registered": len(registered_passengers)}
+    return {
+        "message": "AI Transit Intelligence System",
+        "creator": "KalyanaSundar - AI Engineer",
+        "registered": len(registered_passengers),
+        "active": len(active_sessions),
+        "endpoints": ["/register_passenger", "/auto_entry", "/auto_exit", "/vehicle_status", "/registered_passengers", "/completed_journeys", "/active_alerts", "/clear_data", "/health"]
+    }
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy"}
+    return {"status": "healthy", "registered": len(registered_passengers)}
 
 @app.post("/register_passenger")
 async def register_passenger(
@@ -133,6 +143,11 @@ async def register_passenger(
         if encoding is None:
             return {"status": "error", "message": "No face detected. Please use a clear face image."}
         
+        # Check if passenger already exists
+        for p in registered_passengers:
+            if p["passenger_id"] == passenger_id:
+                return {"status": "error", "message": f"Passenger ID {passenger_id} already exists!"}
+        
         known_face_encodings.append(encoding)
         passenger_data = {
             "passenger_id": passenger_id,
@@ -147,6 +162,8 @@ async def register_passenger(
         known_face_data.append(passenger_data)
         registered_passengers.append(passenger_data)
         save_face_database()
+        
+        print(f"✅ Registered: {name} ({passenger_id})")
         
         return {"status": "success", "message": f"✅ {name} registered successfully!", "passenger": passenger_data}
     except Exception as e:
@@ -244,7 +261,7 @@ async def auto_exit(file: UploadFile = File(...), camera_id: str = Form("")):
             return {
                 "status": "warning",
                 "event": "NOT_INSIDE",
-                "message": f"⚠️ {matched_person['name']} is not inside!",
+                "message": f"⚠️ {matched_person['name']} is not inside the vehicle!",
                 "current_occupancy": len(active_sessions)
             }
         
