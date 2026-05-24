@@ -1,0 +1,26 @@
+﻿services:
+  # Backend Service
+  - type: web
+    name: transit-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend/working_backend.py
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
+    healthCheckPath: /health
+
+  # Frontend Service
+  - type: web
+    name: transit-frontend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run frontend/ultimate_app.py --server.port 10000 --server.address 0.0.0.0
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
+      - key: API_URL
+        value: https://transit-backend.onrender.com
+    healthCheckPath: /
