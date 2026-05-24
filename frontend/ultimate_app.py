@@ -9,7 +9,8 @@ import time
 
 st.set_page_config(page_title="AI Transit System", page_icon="🚀", layout="wide")
 
-API_URL = "http://localhost:8001"
+import os
+API_URL = os.environ.get("API_URL", "http://localhost:8001")
 
 # Initialize session state
 if "registered_persons" not in st.session_state:
