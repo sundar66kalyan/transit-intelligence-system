@@ -1,4 +1,4 @@
-﻿# frontend/ultimate_app.py
+# frontend/ultimate_app.py
 import streamlit as st
 import requests
 import pandas as pd
@@ -7,10 +7,10 @@ from PIL import Image
 import io
 import time
 
-st.set_page_config(page_title="AI Transit System", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="AI Transit System", page_icon="??", layout="wide")
 
 import os
-API_URL = os.environ.get("API_URL", "http://localhost:8001")
+API_URL = os.environ.get("API_URL", "https://transit-backend-k5g1.onrender.com")
 
 # Initialize session state
 if "registered_persons" not in st.session_state:
@@ -62,40 +62,40 @@ def fetch_registered_persons():
 
 # Sidebar
 with st.sidebar:
-    st.markdown("### 📷 Camera Controls")
+    st.markdown("### ?? Camera Controls")
     selected_camera = st.selectbox("Select Camera", list(camera_locations.keys()))
     loc = camera_locations[selected_camera]
-    st.info(f"📍 {loc['address']}\nGPS: {loc['lat']}, {loc['lon']}")
+    st.info(f"?? {loc['address']}\nGPS: {loc['lat']}, {loc['lon']}")
     
     st.markdown("---")
-    st.markdown("### 📊 Live Status")
+    st.markdown("### ?? Live Status")
     try:
         s = requests.get(f"{API_URL}/vehicle_status", timeout=3).json()
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("👥 Occupancy", s.get("current_occupancy", 0))
+            st.metric("?? Occupancy", s.get("current_occupancy", 0))
         with col2:
-            st.metric("🚨 Alerts", s.get("active_alerts", 0))
-        st.metric("📋 Registered", s.get("total_registered", 0))
-        st.metric("✅ Completed", s.get("completed_journeys_count", 0))
+            st.metric("?? Alerts", s.get("active_alerts", 0))
+        st.metric("?? Registered", s.get("total_registered", 0))
+        st.metric("? Completed", s.get("completed_journeys_count", 0))
     except:
         st.info("Starting backend...")
     
     st.markdown("---")
-    if st.button("🔄 Refresh", use_container_width=True):
+    if st.button("?? Refresh", use_container_width=True):
         fetch_registered_persons()
         st.rerun()
     
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center;">
-        <p>🚀 Built with ❤️ by</p>
+        <p>?? Built with ?? by</p>
         <p><strong>KalyanaSundar - AI Engineer</strong></p>
         <p style="font-size: 0.8rem;">GitHub: sundar66kalyan</p>
     </div>
     """, unsafe_allow_html=True)
 
-tabs = st.tabs(["📝 REGISTER", "🤖 AUTO SCAN", "👥 OCCUPANCY", "📊 JOURNEY", "🚨 ALERTS"])
+tabs = st.tabs(["?? REGISTER", "?? AUTO SCAN", "?? OCCUPANCY", "?? JOURNEY", "?? ALERTS"])
 
 # ============ TAB 1: REGISTER ============
 with tabs[0]:
@@ -112,7 +112,7 @@ with tabs[0]:
         uploaded = st.file_uploader("Upload Face Image", type=["jpg", "jpeg", "png"])
         if uploaded:
             st.image(uploaded, width=200)
-            if st.button("✅ REGISTER", type="primary"):
+            if st.button("? REGISTER", type="primary"):
                 if name and pid:
                     img_bytes = convert_image_to_rgb_bytes(uploaded)
                     if img_bytes:
@@ -132,7 +132,7 @@ with tabs[0]:
 
 # ============ TAB 2: AUTO SCAN (Entry & Exit) ============
 with tabs[1]:
-    st.markdown(f"### 🤖 AI Auto Scan - {selected_camera}")
+    st.markdown(f"### ?? AI Auto Scan - {selected_camera}")
     
     st.info("""
     **AI Agent Auto Detection:**
@@ -144,7 +144,7 @@ with tabs[1]:
     
     # ============ ENTRY SCAN ============
     with col1:
-        st.markdown("### 🚪 ENTRY SCAN")
+        st.markdown("### ?? ENTRY SCAN")
         st.caption("Upload face for ENTRY detection")
         
         entry_face = st.file_uploader("Upload face for ENTRY", type=["jpg", "jpeg", "png"], key="entry")
@@ -152,7 +152,7 @@ with tabs[1]:
         if entry_face:
             st.image(entry_face, caption="Entry Face", width=150)
             
-            if st.button("🔍 SCAN ENTRY", type="primary", use_container_width=True, key="entry_btn"):
+            if st.button("?? SCAN ENTRY", type="primary", use_container_width=True, key="entry_btn"):
                 with st.spinner("AI Agent analyzing face for ENTRY..."):
                     img_bytes = convert_image_to_rgb_bytes(entry_face)
                     if img_bytes:
@@ -165,21 +165,21 @@ with tabs[1]:
                                 result = response.json()
                                 
                                 if result.get("event") == "REGISTERED_ENTRY":
-                                    st.success(f"✅ {result.get('message')}")
-                                    st.success(f"👤 Person: {result.get('passenger', {}).get('name')}")
-                                    st.success(f"📍 Location: {result.get('location')}")
-                                    st.success(f"📍 GPS: {result.get('gps')}")
-                                    st.success(f"🕐 Time: {result.get('entry_time')}")
-                                    st.success(f"🎯 Confidence: {result.get('confidence')}%")
-                                    st.success(f"👥 Current Occupancy: {result.get('current_occupancy')}")
+                                    st.success(f"? {result.get('message')}")
+                                    st.success(f"?? Person: {result.get('passenger', {}).get('name')}")
+                                    st.success(f"?? Location: {result.get('location')}")
+                                    st.success(f"?? GPS: {result.get('gps')}")
+                                    st.success(f"?? Time: {result.get('entry_time')}")
+                                    st.success(f"?? Confidence: {result.get('confidence')}%")
+                                    st.success(f"?? Current Occupancy: {result.get('current_occupancy')}")
                                     st.balloons()
                                     
                                 elif result.get("event") == "UNREGISTERED_ENTRY":
-                                    st.error(f"🚨 {result.get('message')}")
-                                    st.error(f"📍 Location: {result.get('location')}")
-                                    st.error(f"📍 GPS: {result.get('gps')}")
-                                    st.error(f"🕐 Time: {result.get('timestamp')}")
-                                    st.warning("⚠️ Alert recorded in Alerts tab")
+                                    st.error(f"?? {result.get('message')}")
+                                    st.error(f"?? Location: {result.get('location')}")
+                                    st.error(f"?? GPS: {result.get('gps')}")
+                                    st.error(f"?? Time: {result.get('timestamp')}")
+                                    st.warning("?? Alert recorded in Alerts tab")
                                     
                                 elif result.get("event") == "ALREADY_INSIDE":
                                     st.warning(result.get("message"))
@@ -191,7 +191,7 @@ with tabs[1]:
     
     # ============ EXIT SCAN ============
     with col2:
-        st.markdown("### 🚪 EXIT SCAN")
+        st.markdown("### ?? EXIT SCAN")
         st.caption("Upload face for EXIT detection")
         
         exit_face = st.file_uploader("Upload face for EXIT", type=["jpg", "jpeg", "png"], key="exit")
@@ -199,7 +199,7 @@ with tabs[1]:
         if exit_face:
             st.image(exit_face, caption="Exit Face", width=150)
             
-            if st.button("🔍 SCAN EXIT", type="primary", use_container_width=True, key="exit_btn"):
+            if st.button("?? SCAN EXIT", type="primary", use_container_width=True, key="exit_btn"):
                 with st.spinner("AI Agent analyzing face for EXIT..."):
                     img_bytes = convert_image_to_rgb_bytes(exit_face)
                     if img_bytes:
@@ -212,13 +212,13 @@ with tabs[1]:
                                 result = response.json()
                                 
                                 if result.get("event") == "EXIT":
-                                    st.success(f"✅ {result.get('message')}")
-                                    st.info(f"👤 Person: {result.get('passenger', {}).get('name')}")
-                                    st.info(f"📍 Exit Location: {result.get('exit_location')}")
-                                    st.info(f"📍 Exit GPS: {result.get('exit_gps')}")
-                                    st.info(f"🕐 Exit Time: {result.get('exit_time')}")
-                                    st.info(f"⏱️ Journey Duration: {result.get('journey_duration')}")
-                                    st.info(f"👥 Remaining Occupancy: {result.get('current_occupancy')}")
+                                    st.success(f"? {result.get('message')}")
+                                    st.info(f"?? Person: {result.get('passenger', {}).get('name')}")
+                                    st.info(f"?? Exit Location: {result.get('exit_location')}")
+                                    st.info(f"?? Exit GPS: {result.get('exit_gps')}")
+                                    st.info(f"?? Exit Time: {result.get('exit_time')}")
+                                    st.info(f"?? Journey Duration: {result.get('journey_duration')}")
+                                    st.info(f"?? Remaining Occupancy: {result.get('current_occupancy')}")
                                     
                                 elif result.get("event") == "NOT_INSIDE":
                                     st.warning(result.get("message"))
@@ -232,7 +232,7 @@ with tabs[1]:
 
 # ============ TAB 3: OCCUPANCY ============
 with tabs[2]:
-    st.markdown("### 👥 Current Occupancy")
+    st.markdown("### ?? Current Occupancy")
     try:
         s = requests.get(f"{API_URL}/vehicle_status").json()
         col1, col2, col3 = st.columns(3)
@@ -254,7 +254,7 @@ with tabs[2]:
 
 # ============ TAB 4: JOURNEY ============
 with tabs[3]:
-    st.markdown("### 📊 Journey History")
+    st.markdown("### ?? Journey History")
     try:
         r = requests.get(f"{API_URL}/completed_journeys")
         if r.status_code == 200:
@@ -269,18 +269,18 @@ with tabs[3]:
 
 # ============ TAB 5: ALERTS ============
 with tabs[4]:
-    st.markdown("### 🚨 Security Alerts")
+    st.markdown("### ?? Security Alerts")
     try:
         r = requests.get(f"{API_URL}/active_alerts")
         if r.status_code == 200:
             alerts = r.json().get("alerts", [])
             if alerts:
                 for alert in alerts:
-                    st.error(f"🚨 {alert.get('message')}")
+                    st.error(f"?? {alert.get('message')}")
             else:
                 st.success("No active alerts")
     except:
         pass
 
 st.markdown("---")
-st.caption("🚀 AI-Powered Transit Intelligence System | Developed by KalyanaSundar - AI Engineer")
+st.caption("?? AI-Powered Transit Intelligence System | Developed by KalyanaSundar - AI Engineer")
