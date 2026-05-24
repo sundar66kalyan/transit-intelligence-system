@@ -4,7 +4,7 @@
     "buildCommand": "pip install -r requirements.txt"
   },
   "deploy": {
-    "startCommand": "python backend/working_backend.py",
+    "startCommand": "python backend/simple_backend.py",
     "restartPolicyType": "ON_FAILURE",
     "numReplicas": 1
   }
