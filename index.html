@@ -3,29 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Transit System | KalyanaSundar</title>
+    <title>KalyanaSundar - AI Engineer | Transit Intelligence System</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: white;
         }
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-        .header { text-align: center; padding: 2rem; }
-        .header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
         .badge {
             background: rgba(255,255,255,0.2);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             display: inline-block;
+            margin-top: 1rem;
         }
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin: 2rem 0;
+            margin: 3rem 0;
         }
         .card {
             background: rgba(255,255,255,0.1);
@@ -33,8 +48,15 @@
             padding: 1.5rem;
             border-radius: 16px;
             text-align: center;
+            transition: transform 0.3s;
         }
-        .card h3 { margin-bottom: 0.5rem; }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
         .btn {
             display: inline-block;
             background: white;
@@ -44,9 +66,37 @@
             text-decoration: none;
             font-weight: bold;
             margin: 0.5rem;
+            transition: transform 0.2s;
         }
-        .btn-github { background: #24292e; color: white; }
-        footer { text-align: center; padding: 2rem; opacity: 0.8; }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .btn-github {
+            background: #24292e;
+            color: white;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -54,41 +104,69 @@
         <div class="header">
             <h1>🚀 AI-Powered Transit Intelligence System</h1>
             <p>Next-Generation Face Recognition | GPS Tracking | Intelligent Monitoring</p>
-            <div class="badge">👨‍💻 Developed by: KalyanaSundar - AI Engineer</div>
+            <div class="badge">
+                👨‍💻 Developed by: <strong>KalyanaSundar - AI Engineer</strong>
+            </div>
         </div>
 
         <div class="grid">
             <div class="card">
                 <h3>🎯 Face Recognition</h3>
-                <p>95% accuracy with real-time matching</p>
+                <p>95% accuracy with real-time matching and attendance tracking</p>
             </div>
             <div class="card">
                 <h3>📍 GPS Tracking</h3>
-                <p>Real-time location coordinates</p>
+                <p>Real-time location coordinates for every entry/exit event</p>
             </div>
             <div class="card">
                 <h3>🤖 AI Agents</h3>
-                <p>Automatic detection & alerts</p>
+                <p>Automatic detection, journey calculation, and security alerts</p>
             </div>
             <div class="card">
                 <h3>📊 Analytics</h3>
-                <p>Journey duration & occupancy</p>
+                <p>Journey duration, occupancy metrics, and historical data</p>
             </div>
         </div>
 
-        <div style="text-align: center;">
-            <a href="https://github.com/sundar66kalyan/transit-intelligence-system" class="btn btn-github">📂 View on GitHub</a>
-            <a href="https://github.com/sundar66kalyan" class="btn">👨‍💻 GitHub Profile</a>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">50+</div>
+                <div>Python Modules</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">95%</div>
+                <div>Accuracy Rate</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">5</div>
+                <div>Camera Support</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">Real-time</div>
+                <div>GPS Tracking</div>
+            </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem;">
-            <h3>📧 Contact for Opportunities</h3>
-            <p>Open to AI Engineer, Computer Vision Engineer roles</p>
-            <p style="margin-top: 0.5rem;">🔗 GitHub: <strong>sundar66kalyan</strong></p>
+        <div style="text-align: center; margin: 2rem 0;">
+            <a href="https://github.com/sundar66kalyan/transit-intelligence-system" class="btn btn-github">
+                📂 View on GitHub
+            </a>
+            <a href="https://github.com/sundar66kalyan" class="btn">
+                👨‍💻 GitHub Profile
+            </a>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <h3>📧 Open to AI Engineer Opportunities</h3>
+            <p>Specialized in Computer Vision | Deep Learning | Intelligent Systems</p>
+            <p style="margin-top: 0.5rem;">
+                🔗 GitHub: <strong>sundar66kalyan</strong>
+            </p>
         </div>
 
         <footer>
             <p>© 2025 KalyanaSundar - AI Engineer | All Rights Reserved</p>
+            <p style="margin-top: 0.5rem;">🚀 Built with Python, Streamlit, FastAPI, and Face Recognition</p>
         </footer>
     </div>
 </body>
