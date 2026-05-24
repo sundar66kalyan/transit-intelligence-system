@@ -2,17 +2,14 @@
   - type: web
     name: transit-backend
     runtime: python
-    repo: https://github.com/sundar66kalyan/transit-intelligence-system
-    branch: main
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn backend.simple_backend:app --host 0.0.0.0 --port 10000
+    startCommand: uvicorn backend.working_backend:app --host 0.0.0.0 --port 10000
     plan: free
+    healthCheckPath: /health
 
   - type: web
     name: transit-frontend
     runtime: python
-    repo: https://github.com/sundar66kalyan/transit-intelligence-system
-    branch: main
     buildCommand: pip install -r requirements.txt
     startCommand: streamlit run frontend/ultimate_app.py --server.port 10000 --server.address 0.0.0.0
     plan: free
